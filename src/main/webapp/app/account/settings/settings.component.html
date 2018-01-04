@@ -1,4 +1,33 @@
 <div>
+
+
+    <h2 *ngIf="blog==null">
+        <span jhiTranslate="blogsApp.blog.home.title">Blogs</span>
+        <button class="btn btn-primary float-right jh-create-entity create-blog" [routerLink]="['/', { outlets: { popup: ['public-blog-new'] } }]">
+            <span class="fa fa-plus"></span>
+            <span class="hidden-sm-down"  jhiTranslate="settings.blog.createLabel">
+        Create new Blog
+        </span>
+        </button>
+    </h2>
+
+    <h2 *ngIf="blog!=null">
+        <span jhiTranslate="blogsApp.blog.home.title">Blogs</span>
+        <button type="submit"
+                [routerLink]="['/', { outlets: { popup: 'public-blog/blog/'+ blog.id + '/edit'} }]"
+                replaceUrl="true"
+                queryParamsHandling="merge"
+                class="btn btn-primary float-right jh-create-entity create-blog">
+            <span class="fa fa-pencil"></span>
+            <span class="hidden-sm-down"  jhiTranslate="settings.blog.createLabel">
+        Create new Blog
+        </span>
+        </button>
+    </h2>
+
+
+
+
     <div class="row justify-content-center">
         <div class="col-md-8">
             <h2 jhiTranslate="settings.title" translateValues="{username: '{{settingsAccount.login}}'}" *ngIf="settingsAccount">User settings for [<b>{{settingsAccount.login}}</b>]</h2>

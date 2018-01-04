@@ -1,0 +1,63 @@
+
+<div *ngIf="blogItem">
+    <h2><span jhiTranslate="blogsApp.blogItem.detail.title">Blog Item</span> {{blogItem.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="blogsApp.blogItem.title">Title</span></dt>
+        <dd>
+            <span>{{blogItem.title}}</span>
+        </dd>
+        <dt><span jhiTranslate="blogsApp.blogItem.text">Text</span></dt>
+        <dd>
+            <span>{{blogItem.text}}</span>
+        </dd>
+        <dt><span jhiTranslate="blogsApp.blogItem.created">Created</span></dt>
+        <dd>
+            <span>{{blogItem.created | date:'medium'}}</span>
+        </dd>
+        <dt><span jhiTranslate="blogsApp.blogItem.updated">Updated</span></dt>
+        <dd>
+            <span>{{blogItem.updated | date:'medium'}}</span>
+        </dd>
+        <dt><span jhiTranslate="blogsApp.blogItem.image">Image</span></dt>
+        <dd>
+            <div *ngIf="blogItem.image">
+                <a (click)="openFile(blogItem.imageContentType, blogItem.image)">
+                    <img [src]="'data:' + blogItem.imageContentType + ';base64,' + blogItem.image" style="max-width: 100%;" alt="blogItem image"/>
+                </a>
+                {{blogItem.imageContentType}}, {{byteSize(blogItem.image)}}
+            </div>
+        </dd>
+        <dt><span jhiTranslate="blogsApp.blogItem.blog">Blog</span></dt>
+        <dd>
+            <div *ngIf="blogItem.blogId">
+                <a [routerLink]="['/blog', blogItem.blogId]">{{blogItem.blogId}}</a>
+            </div>
+        </dd>
+        <dt><span jhiTranslate="blogsApp.blogItem.author">Author</span></dt>
+        <dd>
+            {{blogItem.authorId}}
+        </dd>
+        <dt><span jhiTranslate="blogsApp.blogItem.tags">Tags</span></dt>
+        <dd>
+            <span *ngFor="let tags of blogItem.tags; let last = last">
+                <a [routerLink]="['/tag', tags?.id ]">{{tags.id}}</a>{{last ? '' : ', '}}
+            </span>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'blog-item/'+ blogItem.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

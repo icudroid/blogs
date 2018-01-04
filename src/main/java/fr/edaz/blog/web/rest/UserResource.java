@@ -2,12 +2,14 @@ package fr.edaz.blog.web.rest;
 
 import fr.edaz.blog.config.Constants;
 import com.codahale.metrics.annotation.Timed;
+import fr.edaz.blog.domain.Blog;
 import fr.edaz.blog.domain.User;
 import fr.edaz.blog.repository.UserRepository;
 import fr.edaz.blog.repository.search.UserSearchRepository;
 import fr.edaz.blog.security.AuthoritiesConstants;
 import fr.edaz.blog.service.MailService;
 import fr.edaz.blog.service.UserService;
+import fr.edaz.blog.service.dto.AuthorDTO;
 import fr.edaz.blog.service.dto.UserDTO;
 import fr.edaz.blog.web.rest.errors.BadRequestAlertException;
 import fr.edaz.blog.web.rest.errors.EmailAlreadyUsedException;
@@ -179,6 +181,16 @@ public class UserResource {
         return ResponseUtil.wrapOrNotFound(
             userService.getUserWithAuthoritiesByLogin(login)
                 .map(UserDTO::new));
+    }
+
+
+    @GetMapping("/users/author/{id}")
+    @Timed
+    public ResponseEntity<AuthorDTO> getAuthor(@PathVariable Long id) {
+        log.debug("REST request to get User : {}", id);
+        return ResponseUtil.wrapOrNotFound(
+            userService.getUserWithAuthorities(id)
+                .map(AuthorDTO::new));
     }
 
     /**

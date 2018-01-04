@@ -1,0 +1,122 @@
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="myCommentBlogItemLabel" jhiTranslate="blogsApp.commentBlogItem.home.createOrEditLabel">Create or edit a Comment Blog Item</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" [hidden]="!commentBlogItem.id">
+            <label for="id" jhiTranslate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                   [(ngModel)]="commentBlogItem.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="blogsApp.commentBlogItem.title" for="field_title">Title</label>
+            <input type="text" class="form-control" name="title" id="field_title"
+                [(ngModel)]="commentBlogItem.title" required minlength="3" maxlength="60"/>
+            <div [hidden]="!(editForm.controls.title?.dirty && editForm.controls.title?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.title?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.title?.errors?.minlength" jhiTranslate="entity.validation.minlength" translateValues="{ min: 3 }">
+                   This field is required to be at least 3 characters.
+                </small>
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.title?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" translateValues="{ max: 60 }">
+                   This field cannot be longer than 60 characters.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="blogsApp.commentBlogItem.text" for="field_text">Text</label>
+            <input type="text" class="form-control" name="text" id="field_text"
+                [(ngModel)]="commentBlogItem.text" required minlength="3" maxlength="512"/>
+            <div [hidden]="!(editForm.controls.text?.dirty && editForm.controls.text?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.text?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.text?.errors?.minlength" jhiTranslate="entity.validation.minlength" translateValues="{ min: 3 }">
+                   This field is required to be at least 3 characters.
+                </small>
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.text?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" translateValues="{ max: 512 }">
+                   This field cannot be longer than 512 characters.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="blogsApp.commentBlogItem.created" for="field_created">Created</label>
+            <div class="d-flex">
+                <input id="field_created" type="datetime-local" class="form-control" name="created" [(ngModel)]="commentBlogItem.created"
+                required/>
+            </div>
+            <div [hidden]="!(editForm.controls.created?.dirty && editForm.controls.created?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.created?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.created?.errors?.ZonedDateTimelocal" jhiTranslate="entity.validation.ZonedDateTimelocal">
+                    This field should be a date and time.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="blogsApp.commentBlogItem.updated" for="field_updated">Updated</label>
+            <div class="d-flex">
+                <input id="field_updated" type="datetime-local" class="form-control" name="updated" [(ngModel)]="commentBlogItem.updated"
+                />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="blogsApp.commentBlogItem.status" for="field_status">Status</label>
+            <select class="form-control" name="status" [(ngModel)]="commentBlogItem.status" id="field_status"  required>
+                <option value="CREATED">{{'blogsApp.CommentBlogStatus.CREATED' | translate}}</option>
+                <option value="VALIDATED">{{'blogsApp.CommentBlogStatus.VALIDATED' | translate}}</option>
+                <option value="LOCKED">{{'blogsApp.CommentBlogStatus.LOCKED' | translate}}</option>
+            </select>
+            <div [hidden]="!(editForm.controls.status?.dirty && editForm.controls.status?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.status?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="blogsApp.commentBlogItem.blogItem" for="field_blogItem">Blog Item</label>
+            <select class="form-control" id="field_blogItem" name="blogItem" [(ngModel)]="commentBlogItem.blogItemId" >
+                <option [ngValue]="null"></option>
+                <option [ngValue]="blogItemOption.id" *ngFor="let blogItemOption of blogitems; trackBy: trackBlogItemById">{{blogItemOption.id}}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="blogsApp.commentBlogItem.commentBlogItem" for="field_commentBlogItem">Comment Blog Item</label>
+            <select class="form-control" id="field_commentBlogItem" name="commentBlogItem" [(ngModel)]="commentBlogItem.commentBlogItemId" >
+                <option [ngValue]="null"></option>
+                <option [ngValue]="commentBlogItemOption.id" *ngFor="let commentBlogItemOption of commentblogitems; trackBy: trackCommentBlogItemById">{{commentBlogItemOption.id}}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="blogsApp.commentBlogItem.author" for="field_author">Author</label>
+            <select class="form-control" id="field_author" name="author" [(ngModel)]="commentBlogItem.authorId" >
+                <option [ngValue]="null"></option>
+                <option [ngValue]="userOption.id" *ngFor="let userOption of users; trackBy: trackUserById">{{userOption.id}}</option>
+            </select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+            <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

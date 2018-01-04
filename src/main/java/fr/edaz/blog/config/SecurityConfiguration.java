@@ -109,6 +109,26 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .antMatchers("/api/account/reset-password/init").permitAll()
             .antMatchers("/api/account/reset-password/finish").permitAll()
             .antMatchers("/api/profile-info").permitAll()
+
+
+            .antMatchers(HttpMethod.GET,"/api/blogs").permitAll()
+            .antMatchers(HttpMethod.GET,"/api/blogs/*").permitAll()
+            .antMatchers(HttpMethod.GET,"/api/blog-items").permitAll()
+            .antMatchers(HttpMethod.GET,"/api/comment-blog-items").permitAll()
+            .antMatchers(HttpMethod.GET,"/api/blog-items/*").permitAll()
+            .antMatchers(HttpMethod.GET,"/api/comment-blog-items/*").permitAll()
+
+            .antMatchers("/api/_search/comment-blog-items","/api/_search/blogs","/api/_search/blog-items").permitAll()
+
+            .antMatchers(HttpMethod.GET,"/api/blogs/*/blog-items").permitAll()
+            .antMatchers(HttpMethod.GET,"/api/blog-items/*/comments").permitAll()
+
+
+            .antMatchers(HttpMethod.GET,"/api/users/author/*").permitAll()
+
+
+
+
             .antMatchers("/api/**").authenticated()
             .antMatchers("/management/health").permitAll()
             .antMatchers("/management/**").hasAuthority(AuthoritiesConstants.ADMIN)

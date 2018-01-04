@@ -10,12 +10,14 @@ import {
     JhiAlertComponent,
     JhiAlertErrorComponent
 } from './';
+import {MaxSizePipe} from "./utils/max-size.pipe";
 
 @NgModule({
     imports: [
         BlogsSharedLibsModule
     ],
     declarations: [
+        MaxSizePipe,
         FindLanguageFromKeyPipe,
         JhiAlertComponent,
         JhiAlertErrorComponent
@@ -31,6 +33,7 @@ import {
     exports: [
         BlogsSharedLibsModule,
         FindLanguageFromKeyPipe,
+        MaxSizePipe,
         JhiAlertComponent,
         JhiAlertErrorComponent
     ]

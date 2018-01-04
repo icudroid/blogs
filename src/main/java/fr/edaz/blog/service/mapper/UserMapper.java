@@ -2,6 +2,7 @@ package fr.edaz.blog.service.mapper;
 
 import fr.edaz.blog.domain.Authority;
 import fr.edaz.blog.domain.User;
+import fr.edaz.blog.service.dto.AuthorDTO;
 import fr.edaz.blog.service.dto.UserDTO;
 
 import org.springframework.stereotype.Service;
@@ -20,6 +21,10 @@ public class UserMapper {
 
     public UserDTO userToUserDTO(User user) {
         return new UserDTO(user);
+    }
+
+    public AuthorDTO userToAuthorDTO(User user) {
+        return new AuthorDTO(user);
     }
 
     public List<UserDTO> usersToUserDTOs(List<User> users) {

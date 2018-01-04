@@ -7,6 +7,10 @@
             "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
             "entities": {
                 "main": "Entités",
+                "blog": "Blog",
+                "blogItem": "Blog Item",
+                "tag": "Tag",
+                "commentBlogItem": "Comment Blog Item",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {
@@ -31,7 +35,12 @@
                 "database": "Base de données",
                 "jhipster-needle-menu-add-admin-element": "JHipster will add additional menu entries here (do not translate!)"
             },
-            "language": "Langue"
+            "language": "Langue",
+            "blog": {
+                "main" : "Gérer son blog",
+                "edit" : "Editer son blog",
+                "item.list" : "Lister mes articles"
+            }
         },
         "form": {
             "username": "Nom d'utilisateur",

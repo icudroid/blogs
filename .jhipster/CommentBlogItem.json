@@ -1,0 +1,79 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipName": "blogItem",
+            "otherEntityName": "blogItem",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipName": "commentBlogItem",
+            "otherEntityName": "commentBlogItem",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "replies",
+            "otherEntityName": "commentBlogItem",
+            "otherEntityRelationshipName": "commentBlogItem"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "author",
+            "otherEntityName": "user",
+            "otherEntityField": "id"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "title",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required",
+                "minlength",
+                "maxlength"
+            ],
+            "fieldValidateRulesMinlength": 3,
+            "fieldValidateRulesMaxlength": 60
+        },
+        {
+            "fieldName": "text",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required",
+                "minlength",
+                "maxlength"
+            ],
+            "fieldValidateRulesMinlength": 3,
+            "fieldValidateRulesMaxlength": 512
+        },
+        {
+            "fieldName": "created",
+            "fieldType": "ZonedDateTime",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "updated",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "status",
+            "fieldType": "CommentBlogStatus",
+            "fieldValues": "CREATED,VALIDATED,LOCKED",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "changelogDate": "20180104114817",
+    "entityTableName": "comment_blog_item",
+    "dto": "mapstruct",
+    "pagination": "infinite-scroll",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "searchEngine": "elasticsearch"
+}

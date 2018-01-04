@@ -1,0 +1,10 @@
+{
+    "blogsApp": {
+        "CommentBlogStatus" : {
+            "null": "",
+            "CREATED": "CREATED",
+            "VALIDATED": "VALIDATED",
+            "LOCKED": "LOCKED"
+        }
+    }
+}

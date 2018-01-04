@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { JhiLanguageService } from 'ng-jhipster';
 
 import { Principal, AccountService, JhiLanguageHelper } from '../../shared';
+import {Blog, BlogService} from "../../entities/blog";
 
 @Component({
     selector: 'jhi-settings',
@@ -12,12 +13,14 @@ export class SettingsComponent implements OnInit {
     success: string;
     settingsAccount: any;
     languages: any[];
+    blog :Blog;
 
     constructor(
         private account: AccountService,
         private principal: Principal,
         private languageService: JhiLanguageService,
-        private languageHelper: JhiLanguageHelper
+        private languageHelper: JhiLanguageHelper,
+        private blogService :BlogService,
     ) {
     }
 
@@ -27,6 +30,9 @@ export class SettingsComponent implements OnInit {
         });
         this.languageHelper.getAll().then((languages) => {
             this.languages = languages;
+        });
+        this.blogService.findByLoggedUser().subscribe((blog) => {
+            this.blog = blog;
         });
     }
 

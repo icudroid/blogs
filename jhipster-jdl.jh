@@ -1,0 +1,59 @@
+entity Blog {
+	title String required minlength(3) maxlength(60)
+    subtitle String
+    descritpion String required maxlength(1024)
+    image ImageBlob
+}
+
+entity BlogItem {
+	title String required minlength(3) maxlength(60)
+    text TextBlob required
+    created ZonedDateTime required
+    updated ZonedDateTime
+    image ImageBlob
+}
+
+entity Tag {
+	tagName String required
+}
+
+entity CommentBlogItem {
+	title String required minlength(3) maxlength(60)
+    text String required minlength(3) maxlength(512)
+    created ZonedDateTime required
+    updated ZonedDateTime
+    status CommentBlogStatus required
+}
+
+enum CommentBlogStatus {
+    CREATED, VALIDATED, LOCKED
+}
+
+relationship ManyToMany {
+	BlogItem{tags} to Tag
+}
+
+relationship OneToMany {
+	BlogItem{comments} to CommentBlogItem
+    CommentBlogItem{replies} to CommentBlogItem
+    Blog{items} to BlogItem
+}
+
+
+relationship ManyToOne {
+    BlogItem{author} to User
+    CommentBlogItem{author} to User
+}
+
+relationship OneToOne {
+    Blog{author} to User
+}
+
+paginate BlogItem with infinite-scroll
+paginate CommentBlogItem with infinite-scroll
+paginate Tag with pagination
+
+dto * with mapstruct
+// Set service options to all except few
+service all with serviceImpl
+search all with elasticsearch 

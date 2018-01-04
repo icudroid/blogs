@@ -1,0 +1,122 @@
+
+<div *ngIf="blogItem">
+    <div class="blog-content">
+        <div class="blog-post-main-image">
+            <img class="post-image img-responsive" [src]="'data:' + blogItem.imageContentType + ';base64,' + blogItem.image" style="max-width: 100%;" alt="blogItem image"/>
+        </div>
+        <div class="blog-post-content">
+            <h1>{{blogItem.title}}</h1>
+        </div>
+
+        <div class="entry-meta">
+            <span class="date"><a href="#"><i class="fa fa-fw fa-clock-o"></i> {{blogItem.created | date:'medium'}}</a></span>
+            <span class="divider">|</span>
+            <span class="autor"><a href="#"><i class="fa fa-fw fa-user"></i> {{author.login}}</a></span>
+        </div>
+
+
+        <div [innerHTML]="blogItem.text"></div>
+
+
+        <div class="entry-meta entry-tags-share">
+            <!-- Share Buttons -->
+            <div class="btn-group share-buttons pull-right hidden-xs">
+                <a href="#" target="_blank" class="btn"><i class="fa fa-facebook"></i> </a>
+                <a href="#" target="_blank" class="btn"><i class="fa fa-twitter"></i> </a>
+                <a href="#" target="_blank" class="btn"><i class="fa fa-dribbble"></i> </a>
+            </div>
+            <!-- /Share Buttons -->
+            <ul class="tags">
+                <li *ngFor="let tags of blogItem.tags;"><a [routerLink]="['/tag', tags?.id ]">{{tags.tagName}}</a></li>
+            </ul>
+        </div>
+
+        <jhi-comment-by-blog-item [blogItemId]="blogItem.id"></jhi-comment-by-blog-item>
+        <jhi-leave-comment [blogItemId]="blogItem.id" *ngIf="principal.isAuthenticated()"></jhi-leave-comment>
+
+        <div *ngIf="!principal.isAuthenticated()">
+            Pour laisser un message vous devez vous identifier en cliquant <a (click)="login()">ici</a>.
+        </div>
+
+
+        <button type="submit"
+                (click)="previousState()"
+                class="btn btn-info">
+            <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+        </button>
+
+
+        <button type="button" *ngIf="ownBlog == true"
+                [routerLink]="['/', { outlets: { popup: 'public-blog/item/'+ blogItem.id + '/edit'} }]"
+                replaceUrl="true"
+                queryParamsHandling="merge"
+                class="btn btn-primary">
+            <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+        </button>
+
+
+    </div>
+</div>
+
+<!--<div *ngIf="blogItem">
+    <h2><span jhiTranslate="blogsApp.blogItem.detail.title">Blog Item</span> {{blogItem.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="blogsApp.blogItem.title">Title</span></dt>
+        <dd>
+            <span>{{blogItem.title}}</span>
+        </dd>
+        <dt><span jhiTranslate="blogsApp.blogItem.text">Text</span></dt>
+        <dd>
+            <span>{{blogItem.text}}</span>
+        </dd>
+        <dt><span jhiTranslate="blogsApp.blogItem.created">Created</span></dt>
+        <dd>
+            <span>{{blogItem.created | date:'medium'}}</span>
+        </dd>
+        <dt><span jhiTranslate="blogsApp.blogItem.updated">Updated</span></dt>
+        <dd>
+            <span>{{blogItem.updated | date:'medium'}}</span>
+        </dd>
+        <dt><span jhiTranslate="blogsApp.blogItem.image">Image</span></dt>
+        <dd>
+            <div *ngIf="blogItem.image">
+                <a (click)="openFile(blogItem.imageContentType, blogItem.image)">
+                    <img [src]="'data:' + blogItem.imageContentType + ';base64,' + blogItem.image" style="max-width: 100%;" alt="blogItem image"/>
+                </a>
+                {{blogItem.imageContentType}}, {{byteSize(blogItem.image)}}
+            </div>
+        </dd>
+        <dt><span jhiTranslate="blogsApp.blogItem.blog">Blog</span></dt>
+        <dd>
+            <div *ngIf="blogItem.blogId">
+                <a [routerLink]="['/blog', blogItem.blogId]">{{blogItem.blogId}}</a>
+            </div>
+        </dd>
+        <dt><span jhiTranslate="blogsApp.blogItem.author">Author</span></dt>
+        <dd>
+            {{blogItem.authorId}}
+        </dd>
+        <dt><span jhiTranslate="blogsApp.blogItem.tags">Tags</span></dt>
+        <dd>
+            <span *ngFor="let tags of blogItem.tags; let last = last">
+                <a [routerLink]="['/tag', tags?.id ]">{{tags.id}}</a>{{last ? '' : ', '}}
+            </span>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'public-blog/item/'+ blogItem.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>-->

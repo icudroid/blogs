@@ -1,17 +1,19 @@
-import { Injectable } from '@angular/core';
-import { Http, Response } from '@angular/http';
-import { Observable } from 'rxjs/Rx';
+import {Injectable} from '@angular/core';
+import {Http, Response} from '@angular/http';
+import {Observable} from 'rxjs/Rx';
 
-import { SERVER_API_URL } from '../../app.constants';
-import { User } from './user.model';
-import { ResponseWrapper } from '../model/response-wrapper.model';
-import { createRequestOption } from '../model/request-util';
+import {SERVER_API_URL} from '../../app.constants';
+import {User} from './user.model';
+import {ResponseWrapper} from '../model/response-wrapper.model';
+import {createRequestOption} from '../model/request-util';
+import {Author} from "./author-model";
 
 @Injectable()
 export class UserService {
     private resourceUrl = SERVER_API_URL + 'api/users';
 
-    constructor(private http: Http) { }
+    constructor(private http: Http) {
+    }
 
     create(user: User): Observable<ResponseWrapper> {
         return this.http.post(this.resourceUrl, user)
@@ -26,6 +28,11 @@ export class UserService {
     find(login: string): Observable<User> {
         return this.http.get(`${this.resourceUrl}/${login}`).map((res: Response) => res.json());
     }
+
+    findById(id: number): Observable<Author> {
+        return this.http.get(`${this.resourceUrl}/author/${id}`).map((res: Response) => res.json());
+    }
+
 
     query(req?: any): Observable<ResponseWrapper> {
         const options = createRequestOption(req);

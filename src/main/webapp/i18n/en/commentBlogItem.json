@@ -1,0 +1,30 @@
+{
+    "blogsApp": {
+        "commentBlogItem" : {
+            "home": {
+                "title": "Comment Blog Items",
+                "createLabel": "Create a new Comment Blog Item",
+                "createOrEditLabel": "Create or edit a Comment Blog Item",
+                "search": "Search for Comment Blog Item"
+            },
+            "created": "A new Comment Blog Item is created with identifier {{ param }}",
+            "updated": "A Comment Blog Item is updated with identifier {{ param }}",
+            "deleted": "A Comment Blog Item is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Comment Blog Item {{ id }}?"
+            },
+            "detail": {
+                "title": "Comment Blog Item"
+            },
+            "title": "Title",
+            "text": "Text",
+            "created": "Created",
+            "updated": "Updated",
+            "status": "Status",
+            "blogItem": "Blog Item",
+            "commentBlogItem": "Comment Blog Item",
+            "replies": "Replies",
+            "author": "Author"
+        }
+    }
+}

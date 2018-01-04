@@ -1,0 +1,129 @@
+<div>
+    <h2>
+        <span jhiTranslate="blogsApp.blogItem.home.title">Blog Items</span>
+        <button class="btn btn-primary float-right jh-create-entity create-blog-item" [routerLink]="['/', { outlets: { popup: ['public-blog-item-new'] } }]">
+            <span class="fa fa-plus"></span>
+            <span class="hidden-sm-down"  jhiTranslate="blogsApp.blogItem.home.createLabel">
+            Create new Blog Item
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <div class="row">
+        <div class="col-sm-12">
+            <form name="searchForm" class="form-inline">
+                <div class="input-group w-100 mt-3">
+                    <input type="text" class="form-control" [(ngModel)]="currentSearch" id="currentSearch" name="currentSearch" placeholder="{{ 'blogsApp.blogItem.home.search' | translate }}">
+                    <button class="input-group-addon btn btn-info" (click)="search(currentSearch)">
+                        <span class="fa fa-search"></span>
+                    </button>
+                    <button class="input-group-addon btn btn-danger" (click)="clear()" *ngIf="currentSearch">
+                        <span class="fa fa-trash-o"></span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <br/>
+
+
+
+    <div class="row"  *ngIf="blogItems" infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
+        <div class="col-sm-6" *ngFor="let blogItem of blogItems ;trackBy: trackId">
+            <div class="card mb-3">
+                <a *ngIf="blogItem.image" [routerLink]="['../../public-blog/item', blogItem.id ]" routerLinkActive="active">
+                    <img [src]="'data:' + blogItem.imageContentType + ';base64,' + blogItem.image" alt="blogItem image" class="card-img-top"/>
+                </a>
+                <div class="card-body">
+                    <h5 class="card-title">{{blogItem.title}}</h5>
+                    <p class="card-text" [innerHTML]="blogItem.text | maxSize:250"></p>
+                    <small class="text-muted"> <span jhiTranslate="blogsApp.blogItem.created"></span> : {{blogItem.created | date:'medium'}}</small><br/>
+                    <small class="text-muted"> <span jhiTranslate="blogsApp.blogItem.updated"></span> : {{blogItem.updated | date:'medium'}}</small>
+                </div>
+                <div class="card-footer">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['../../public-blog/item', blogItem.id ]"
+                                class="btn btn-info btn-sm">
+                            <span class="fa fa-eye"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'public-blog/item/'+ blogItem.id + '/edit'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-primary btn-sm">
+                            <span class="fa fa-pencil"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'public-blog/item/'+ blogItem.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <span class="fa fa-remove"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!--    <div class="table-responsive" *ngIf="blogItems">
+        <table class="table table-striped">
+            <thead>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="reset.bind(this)">
+            <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="title"><span jhiTranslate="blogsApp.blogItem.title">Title</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="text"><span jhiTranslate="blogsApp.blogItem.text">Text</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="created"><span jhiTranslate="blogsApp.blogItem.created">Created</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="updated"><span jhiTranslate="blogsApp.blogItem.updated">Updated</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="image"><span jhiTranslate="blogsApp.blogItem.image">Image</span> <span class="fa fa-sort"></span></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
+            <tr *ngFor="let blogItem of blogItems ;trackBy: trackId">
+                <td><a [routerLink]="['../blog-item', blogItem.id ]">{{blogItem.id}}</a></td>
+                <td>{{blogItem.title}}</td>
+                <td>{{blogItem.text}}</td>
+                <td>{{blogItem.created | date:'medium'}}</td>
+                <td>{{blogItem.updated | date:'medium'}}</td>
+                <td>
+                    <a *ngIf="blogItem.image" (click)="openFile(blogItem.imageContentType, blogItem.image)">
+                        <img [src]="'data:' + blogItem.imageContentType + ';base64,' + blogItem.image" style="max-height: 30px;" alt="blogItem image"/>
+                    </a>
+                    <span *ngIf="blogItem.image">{{blogItem.imageContentType}}, {{byteSize(blogItem.image)}}</span>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['../../public-blog/item', blogItem.id ]"
+                                class="btn btn-info btn-sm">
+                            <span class="fa fa-eye"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'public-blog/item/'+ blogItem.id + '/edit'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-primary btn-sm">
+                            <span class="fa fa-pencil"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'public-blog/item/'+ blogItem.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <span class="fa fa-remove"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>-->
+</div>
