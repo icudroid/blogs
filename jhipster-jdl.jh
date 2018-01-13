@@ -1,6 +1,5 @@
 entity Blog {
 	title String required minlength(3) maxlength(60)
-    subtitle String
     descritpion String required maxlength(1024)
     image ImageBlob
 }
@@ -18,7 +17,6 @@ entity Tag {
 }
 
 entity CommentBlogItem {
-	title String required minlength(3) maxlength(60)
     text String required minlength(3) maxlength(512)
     created ZonedDateTime required
     updated ZonedDateTime
@@ -56,4 +54,4 @@ paginate Tag with pagination
 dto * with mapstruct
 // Set service options to all except few
 service all with serviceImpl
-search all with elasticsearch 
+search all with elasticsearch
