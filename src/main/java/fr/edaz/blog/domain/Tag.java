@@ -27,7 +27,7 @@ public class Tag implements Serializable {
     private Long id;
 
     @NotNull
-    @Column(name = "tag_name", nullable = false)
+    @Column(name = "tag_name", nullable = false ,unique = true)
     private String tagName;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove

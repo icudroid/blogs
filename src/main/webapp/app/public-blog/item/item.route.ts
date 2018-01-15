@@ -29,6 +29,13 @@ export const blogItemRoute: Routes = [
         data: {
             pageTitle: 'blogsApp.blogItem.home.title'
         }
+    },
+    {
+        path: 'public-blog/:blogname/tag/:tagname',
+        component: PublicItemComponent,
+        data: {
+            pageTitle: 'blogsApp.blogItem.home.title'
+        }
     }
 
 

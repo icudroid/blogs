@@ -27,7 +27,7 @@
             </div>
             <!-- /Share Buttons -->
             <ul class="tags">
-                <li *ngFor="let tags of blogItem.tags;"><a [routerLink]="['/tag', tags?.id ]">{{tags.tagName}}</a></li>
+                <li *ngFor="let tags of blogItem.tags;"><a [routerLink]="['/public-blog', blog.title, 'tag',  tags?.tagName ]">{{tags.tagName}}</a></li>
             </ul>
         </div>
 

@@ -13,6 +13,8 @@ export class BlogItemService {
 
     private resourceUrl = SERVER_API_URL + 'api/blog-items';
     private resourceFindByBlogNameUrl = SERVER_API_URL + 'api/blogs/{blogName}/blog-items';
+    private resourceFindByBlogNameAndTagnameUrl = SERVER_API_URL + '/api/blogs/{blogName}/blog-items/tag/{tagName}';
+
     private resourceSearchUrl = SERVER_API_URL + 'api/_search/blog-items';
 
     constructor(private http: Http, private dateUtils: JhiDateUtils) {
@@ -49,7 +51,16 @@ export class BlogItemService {
 
     queryByBlogName(blogName: string, req?: any): Observable<ResponseWrapper> {
         const options = createRequestOption(req);
-        return this.http.get(this.resourceFindByBlogNameUrl.split("{blogName}").join(blogName), options)
+        return this.http.get(this.resourceFindByBlogNameUrl.split('{blogName}').join(blogName), options)
+            .map((res: Response) => this.convertResponse(res));
+    }
+
+    queryByBlogNameAndTagName(blogName: string, tagname: string, req?: any): Observable<ResponseWrapper> {
+        const options = createRequestOption(req);
+        return this.http.get(
+            this.resourceFindByBlogNameAndTagnameUrl.split('{blogName}').join(blogName)
+                .split('{tagName}').join(tagname)
+            , options)
             .map((res: Response) => this.convertResponse(res));
     }
 
@@ -66,6 +77,12 @@ export class BlogItemService {
     searchByBlogName(blogName: string, req?: any) {
         const options = createRequestOption(req);
         return this.http.get(this.resourceSearchUrl + '/' + blogName, options)
+            .map((res: any) => this.convertResponse(res));
+    }
+
+    searchByBlogNameAndTagName(blogName: string, tagName: string, req?: any) {
+        const options = createRequestOption(req);
+        return this.http.get(this.resourceSearchUrl + '/' + blogName + '/tag/' + tagName, options)
             .map((res: any) => this.convertResponse(res));
     }
 

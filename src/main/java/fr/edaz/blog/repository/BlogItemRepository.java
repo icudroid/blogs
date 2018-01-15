@@ -30,4 +30,8 @@ public interface BlogItemRepository extends JpaRepository<BlogItem, Long> {
 
     @Query("select blog_item from BlogItem blog_item where blog_item.blog.title =:blogName")
     Page<BlogItem> findAllByBlogTitle(@Param("blogName")String blogName, Pageable pageable);
+
+    @Query("select blog_item from BlogItem blog_item join blog_item.tags as tag where blog_item.blog.title =:blogName and tag.tagName =:tagName")
+    Page<BlogItem> findAllByBlogTitleAndTagName(@Param("blogName")String blogName, @Param("tagName")String tagName, Pageable pageable);
+
 }

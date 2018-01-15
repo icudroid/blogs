@@ -1,8 +1,10 @@
 package fr.edaz.blog.service.impl;
 
 import fr.edaz.blog.domain.Blog;
+import fr.edaz.blog.domain.Tag;
 import fr.edaz.blog.domain.User;
 import fr.edaz.blog.repository.BlogRepository;
+import fr.edaz.blog.repository.TagRepository;
 import fr.edaz.blog.repository.UserRepository;
 import fr.edaz.blog.security.SecurityUtils;
 import fr.edaz.blog.service.BlogItemService;
@@ -39,6 +41,7 @@ public class BlogItemServiceImpl implements BlogItemService {
 
     private final BlogRepository blogRepository;
 
+    private final TagRepository tagRepository;
 
     private final BlogItemMapper blogItemMapper;
 
@@ -46,9 +49,10 @@ public class BlogItemServiceImpl implements BlogItemService {
 
     private final UserRepository userRepository;
 
-    public BlogItemServiceImpl(BlogItemRepository blogItemRepository, BlogRepository blogRepository, BlogItemMapper blogItemMapper, BlogItemSearchRepository blogItemSearchRepository, UserRepository userRepository) {
+    public BlogItemServiceImpl(BlogItemRepository blogItemRepository, BlogRepository blogRepository, TagRepository tagRepository, BlogItemMapper blogItemMapper, BlogItemSearchRepository blogItemSearchRepository, UserRepository userRepository) {
         this.blogItemRepository = blogItemRepository;
         this.blogRepository = blogRepository;
+        this.tagRepository = tagRepository;
         this.blogItemMapper = blogItemMapper;
         this.blogItemSearchRepository = blogItemSearchRepository;
         this.userRepository = userRepository;
@@ -169,10 +173,38 @@ public class BlogItemServiceImpl implements BlogItemService {
     }
 
     @Override
+    public Page<BlogItemDTO> searchByBlogNameAndTagName(String blogName, String tagName, String query, Pageable pageable) {
+        log.debug("Request to search for a page of BlogItems for query {}", query);
+
+        Blog blog = blogRepository.findByTitle(blogName);
+        Tag tag = tagRepository.findByTagName(tagName);
+
+        SearchQuery searchQuery = new NativeSearchQueryBuilder()
+            .withQuery(queryStringQuery(query))
+            .withFilter(boolQuery().must(termQuery("blog.id", blog.getId())))
+            .withFilter(boolQuery().must(termQuery("blog.tags.id", tag.getId())))
+            .withPageable(pageable)
+            .build();
+
+        Page<BlogItem> result = blogItemSearchRepository.search(searchQuery);
+        return result.map(blogItemMapper::toDto);
+    }
+
+    @Override
     public Page<BlogItemDTO> findAllByBlogName(String blogName, Pageable pageable) {
         log.debug("Request to get all BlogItems");
         return blogItemRepository.findAllByBlogTitle(blogName, pageable)
             .map(blogItemMapper::toDto);
     }
+
+    @Override
+    public Page<BlogItemDTO> findAllByBlogNameAndtagName(String blogName, String tagName, Pageable pageable) {
+        log.debug("Request to get all BlogItems");
+        return blogItemRepository.findAllByBlogTitleAndTagName(blogName, tagName, pageable)
+            .map(blogItemMapper::toDto);
+    }
+
+
+
 
 }

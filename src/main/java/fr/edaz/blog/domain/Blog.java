@@ -31,7 +31,7 @@ public class Blog implements Serializable {
 
     @NotNull
     @Size(min = 3, max = 60)
-    @Column(name = "title", length = 60, nullable = false)
+    @Column(name = "title", length = 60, nullable = false, unique = true)
     private String title;
 
     @Column(name = "subtitle")

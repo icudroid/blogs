@@ -150,6 +150,18 @@ public class BlogItemResource {
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
+
+    @GetMapping("/blogs/{blogName}/blog-items/tag/{tagName}")
+    @Timed
+    public ResponseEntity<List<BlogItemDTO>> getAllBlogItemsByBlogName(@PathVariable String blogName, @PathVariable String tagName, Pageable pageable) {
+        log.debug("REST request to get a page of BlogItems");
+
+        Page<BlogItemDTO> page = blogItemService.findAllByBlogNameAndtagName(blogName, tagName,pageable);
+
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/blog-items");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
     /**
      * GET  /blog-items/:id : get the "id" blogItem.
      *
@@ -217,6 +229,15 @@ public class BlogItemResource {
         log.debug("REST request to search for a page of BlogItems for query {}", query);
         Page<BlogItemDTO> page = blogItemService.searchByBlogName(blogName, query, pageable);
         HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/blog-items/" + blogName);
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+    @GetMapping("/_search/blog-items/{blogName}/tag/{tagName}")
+    @Timed
+    public ResponseEntity<List<BlogItemDTO>> searchBlogItemsByBlogNameAndTagName(@PathVariable String blogName, @PathVariable String tagName,@RequestParam String query, Pageable pageable) {
+        log.debug("REST request to search for a page of BlogItems for query {}", query);
+        Page<BlogItemDTO> page = blogItemService.searchByBlogNameAndTagName(blogName,tagName, query, pageable);
+        HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/blog-items/" + blogName+ "/tag/" + tagName);
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 

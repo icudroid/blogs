@@ -13,4 +13,5 @@ import org.springframework.data.jpa.repository.*;
 @Repository
 public interface TagRepository extends JpaRepository<Tag, Long> {
 
+    Tag findByTagName(String tagName);
 }

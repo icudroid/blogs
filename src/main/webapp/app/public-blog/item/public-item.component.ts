@@ -23,6 +23,7 @@ export class PublicItemComponent implements OnInit, OnDestroy {
     totalItems: number;
     currentSearch: string;
     currentBlog: string;
+    currentTag: string;
     constructor(
         private blogItemService: BlogItemService,
         private jhiAlertService: JhiAlertService,
@@ -40,12 +41,15 @@ export class PublicItemComponent implements OnInit, OnDestroy {
         this.predicate = 'id';
         this.reverse = true;
         this.currentBlog = this.activatedRoute.snapshot.params['blogname'];
+        this.currentTag = this.activatedRoute.snapshot.params['tagname'];
         this.currentSearch = this.activatedRoute.snapshot && this.activatedRoute.snapshot.params['search'] ?
             this.activatedRoute.snapshot.params['search'] : '';
     }
 
     loadAll() {
-        if (this.currentSearch) {
+        console.log(this.currentTag)
+
+        if (this.currentSearch && !this.currentTag) {
             this.blogItemService.searchByBlogName( this.currentBlog, {
                 query: this.currentSearch,
                 page: this.page,
@@ -57,14 +61,41 @@ export class PublicItemComponent implements OnInit, OnDestroy {
             );
             return;
         }
-        this.blogItemService.queryByBlogName(this.currentBlog,{
-            page: this.page,
-            size: this.itemsPerPage,
-            sort: this.sort()
-        }).subscribe(
-            (res: ResponseWrapper) => this.onSuccess(res.json, res.headers),
-            (res: ResponseWrapper) => this.onError(res.json)
-        );
+
+        if (this.currentSearch && this.currentTag) {
+            this.blogItemService.searchByBlogNameAndTagName( this.currentBlog, {
+                query: this.currentSearch,
+                page: this.page,
+                size: this.itemsPerPage,
+                sort: this.sort()
+            }).subscribe(
+                (res: ResponseWrapper) => this.onSuccess(res.json, res.headers),
+                (res: ResponseWrapper) => this.onError(res.json)
+            );
+            return;
+        }
+
+
+        if(this.currentTag) {
+            this.blogItemService.queryByBlogNameAndTagName(this.currentBlog, this.currentTag,{
+                page: this.page,
+                size: this.itemsPerPage,
+                sort: this.sort()
+            }).subscribe(
+                (res: ResponseWrapper) => this.onSuccess(res.json, res.headers),
+                (res: ResponseWrapper) => this.onError(res.json)
+            );
+        }else{
+            this.blogItemService.queryByBlogName(this.currentBlog,{
+                page: this.page,
+                size: this.itemsPerPage,
+                sort: this.sort()
+            }).subscribe(
+                (res: ResponseWrapper) => this.onSuccess(res.json, res.headers),
+                (res: ResponseWrapper) => this.onError(res.json)
+            );
+        }
+
     }
 
     reset() {

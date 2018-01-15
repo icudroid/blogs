@@ -118,7 +118,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .antMatchers(HttpMethod.GET,"/api/blog-items/*").permitAll()
             .antMatchers(HttpMethod.GET,"/api/comment-blog-items/*").permitAll()
 
-            .antMatchers("/api/_search/comment-blog-items","/api/_search/blogs","/api/_search/blog-items").permitAll()
+
+            .antMatchers(HttpMethod.GET,"/api/blogs/*/blog-items/tag/*").permitAll()
+
+
+
+            .antMatchers("/api/_search/comment-blog-items","/api/_search/blogs","/api/_search/blog-items","/api/_search/blog-items/*").permitAll()
 
             .antMatchers(HttpMethod.GET,"/api/blogs/*/blog-items").permitAll()
             .antMatchers(HttpMethod.GET,"/api/blog-items/*/comments").permitAll()

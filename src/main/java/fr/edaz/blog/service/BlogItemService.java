@@ -62,4 +62,10 @@ public interface BlogItemService {
 
     @Transactional(readOnly = true)
     Page<BlogItemDTO> findAllByBlogName(String blogName, Pageable pageable);
+
+    @Transactional(readOnly = true)
+    Page<BlogItemDTO> findAllByBlogNameAndtagName(String blogName, String tagName, Pageable pageable);
+
+    @Transactional(readOnly = true)
+    Page<BlogItemDTO> searchByBlogNameAndTagName(String blogName, String tagName, String query, Pageable pageable);
 }
