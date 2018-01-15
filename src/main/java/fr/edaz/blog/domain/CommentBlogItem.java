@@ -62,7 +62,7 @@ public class CommentBlogItem implements Serializable {
 
     @OneToMany(mappedBy = "commentBlogItem")
     @JsonIgnore
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @Cache(usage = CacheConcurrencyStrategy.NONE)
     private Set<CommentBlogItem> replies = new HashSet<>();
 
     @ManyToOne

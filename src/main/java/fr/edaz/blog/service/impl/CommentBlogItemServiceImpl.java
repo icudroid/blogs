@@ -114,6 +114,7 @@ public class CommentBlogItemServiceImpl implements CommentBlogItemService{
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Page<CommentBlogItemWithAuthorDTO> findByItem(Long idBlogItem, Pageable pageable) {
         log.debug("Request to get all CommentBlogItems");
         return commentBlogItemRepository.findByBlogItem_Id(idBlogItem,pageable)

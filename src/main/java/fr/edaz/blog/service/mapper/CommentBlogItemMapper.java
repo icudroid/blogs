@@ -1,13 +1,9 @@
 package fr.edaz.blog.service.mapper;
 
-import fr.edaz.blog.domain.*;
-import fr.edaz.blog.service.dto.AuthorDTO;
+import fr.edaz.blog.domain.CommentBlogItem;
 import fr.edaz.blog.service.dto.CommentBlogItemDTO;
-
-import fr.edaz.blog.service.dto.CommentBlogItemWithAuthorDTO;
-import org.mapstruct.*;
-
-import java.util.stream.Collectors;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 /**
  * Mapper for the entity CommentBlogItem and its DTO CommentBlogItemDTO.
