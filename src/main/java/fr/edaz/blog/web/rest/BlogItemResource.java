@@ -128,7 +128,9 @@ public class BlogItemResource {
 
         Page<BlogItemDTO> page;
 
-        if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) {
+        if(!SecurityUtils.isAuthenticated()){
+            page = blogItemService.findAll(pageable);
+        } else if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) {
             page = blogItemService.findAll(pageable);
         } else {
             page = blogItemService.findAllByCurrentUser(pageable);

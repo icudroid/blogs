@@ -143,9 +143,7 @@ public class CommentBlogItemResourceIntTest {
         List<CommentBlogItem> commentBlogItemList = commentBlogItemRepository.findAll();
         assertThat(commentBlogItemList).hasSize(databaseSizeBeforeCreate + 1);
         CommentBlogItem testCommentBlogItem = commentBlogItemList.get(commentBlogItemList.size() - 1);
-        assertThat(testCommentBlogItem.getTitle()).isEqualTo(DEFAULT_TITLE);
         assertThat(testCommentBlogItem.getText()).isEqualTo(DEFAULT_TEXT);
-        assertThat(testCommentBlogItem.getCreated()).isEqualTo(DEFAULT_CREATED);
         assertThat(testCommentBlogItem.getUpdated()).isEqualTo(DEFAULT_UPDATED);
         assertThat(testCommentBlogItem.getStatus()).isEqualTo(DEFAULT_STATUS);
 
@@ -178,67 +176,10 @@ public class CommentBlogItemResourceIntTest {
 
     @Test
     @Transactional
-    public void checkTitleIsRequired() throws Exception {
-        int databaseSizeBeforeTest = commentBlogItemRepository.findAll().size();
-        // set the field null
-        commentBlogItem.setTitle(null);
-
-        // Create the CommentBlogItem, which fails.
-        CommentBlogItemDTO commentBlogItemDTO = commentBlogItemMapper.toDto(commentBlogItem);
-
-        restCommentBlogItemMockMvc.perform(post("/api/comment-blog-items")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(commentBlogItemDTO)))
-            .andExpect(status().isBadRequest());
-
-        List<CommentBlogItem> commentBlogItemList = commentBlogItemRepository.findAll();
-        assertThat(commentBlogItemList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
     public void checkTextIsRequired() throws Exception {
         int databaseSizeBeforeTest = commentBlogItemRepository.findAll().size();
         // set the field null
         commentBlogItem.setText(null);
-
-        // Create the CommentBlogItem, which fails.
-        CommentBlogItemDTO commentBlogItemDTO = commentBlogItemMapper.toDto(commentBlogItem);
-
-        restCommentBlogItemMockMvc.perform(post("/api/comment-blog-items")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(commentBlogItemDTO)))
-            .andExpect(status().isBadRequest());
-
-        List<CommentBlogItem> commentBlogItemList = commentBlogItemRepository.findAll();
-        assertThat(commentBlogItemList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    public void checkCreatedIsRequired() throws Exception {
-        int databaseSizeBeforeTest = commentBlogItemRepository.findAll().size();
-        // set the field null
-        commentBlogItem.setCreated(null);
-
-        // Create the CommentBlogItem, which fails.
-        CommentBlogItemDTO commentBlogItemDTO = commentBlogItemMapper.toDto(commentBlogItem);
-
-        restCommentBlogItemMockMvc.perform(post("/api/comment-blog-items")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(commentBlogItemDTO)))
-            .andExpect(status().isBadRequest());
-
-        List<CommentBlogItem> commentBlogItemList = commentBlogItemRepository.findAll();
-        assertThat(commentBlogItemList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    public void checkStatusIsRequired() throws Exception {
-        int databaseSizeBeforeTest = commentBlogItemRepository.findAll().size();
-        // set the field null
-        commentBlogItem.setStatus(null);
 
         // Create the CommentBlogItem, which fails.
         CommentBlogItemDTO commentBlogItemDTO = commentBlogItemMapper.toDto(commentBlogItem);

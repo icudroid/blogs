@@ -224,24 +224,6 @@ public class BlogItemResourceIntTest {
         assertThat(blogItemList).hasSize(databaseSizeBeforeTest);
     }
 
-    @Test
-    @Transactional
-    public void checkCreatedIsRequired() throws Exception {
-        int databaseSizeBeforeTest = blogItemRepository.findAll().size();
-        // set the field null
-        blogItem.setCreated(null);
-
-        // Create the BlogItem, which fails.
-        BlogItemDTO blogItemDTO = blogItemMapper.toDto(blogItem);
-
-        restBlogItemMockMvc.perform(post("/api/blog-items")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(blogItemDTO)))
-            .andExpect(status().isBadRequest());
-
-        List<BlogItem> blogItemList = blogItemRepository.findAll();
-        assertThat(blogItemList).hasSize(databaseSizeBeforeTest);
-    }
 
     @Test
     @Transactional
@@ -394,20 +376,7 @@ public class BlogItemResourceIntTest {
             .andExpect(jsonPath("$.[*].image").value(hasItem(Base64Utils.encodeToString(DEFAULT_IMAGE))));
     }
 
-    @Test
-    @Transactional
-    public void equalsVerifier() throws Exception {
-        TestUtil.equalsVerifier(BlogItem.class);
-        BlogItem blogItem1 = new BlogItem();
-        blogItem1.setId(1L);
-        BlogItem blogItem2 = new BlogItem();
-        blogItem2.setId(blogItem1.getId());
-        assertThat(blogItem1).isEqualTo(blogItem2);
-        blogItem2.setId(2L);
-        assertThat(blogItem1).isNotEqualTo(blogItem2);
-        blogItem1.setId(null);
-        assertThat(blogItem1).isNotEqualTo(blogItem2);
-    }
+
 
     @Test
     @Transactional
